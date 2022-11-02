@@ -1,13 +1,44 @@
-server:
-  port: 8000
 spring:
   cloud:
+    config:
+      discovery:
+        enabled: true
+        service-id: config-server
+      name: gateway
+      profile: dev
+      label: master
     gateway:
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedMethods: "*"
+            allowedHeaders: "*"
+      default-filters:
+      - DedupeResponseHeader=Access-Control-Allow-Origin, RETAIN_UNIQUE
       routes:
-      - id: order-service-route
-        uri: lb:http://order-service
-        predicates:
-        - Path=/orders-service/api/**
-        - After=2022-11-02T13:37:09+08:00[Asia/Shanghai]
-        filters:
-        - RewritePath=/orders-service/api/(?<segment>.*), /orders/$\{segment}
+        - id: order-service-route
+          uri: lb:http://order-service
+          predicates:
+          - Path=/orders-service/api/**
+          - After=2022-11-02T09:33:09+08:00[Asia/Shanghai]
+          filters:
+          - RewritePath=/orders-service/api/(?<segment>.*), /orders/$\{segment}
+#            - StripPrefix=2
+#            - PrefixPath=/xx
+order-service:
+  ribbon:
+    NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RandomRule #配置规则 随机
+
+---
+spring:
+  profiles: p8000
+server:
+  port: 8000
+---
+spring:
+  profiles: p8001
+server:
+  port: 8001
+  
+
