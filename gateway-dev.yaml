@@ -24,4 +24,8 @@ order-service:
     NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RandomRule #配置规则 随机
 
   
-
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"   # * 在yaml 文件属于关键字，所以需要加引号，此处代表所有端点
