@@ -30,15 +30,5 @@ order-service:
   ribbon:
     NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RandomRule #配置规则 随机
 
----
-spring:
-  profiles: p8000
-server:
-  port: 8000
----
-spring:
-  profiles: p8001
-server:
-  port: 8001
   
 
